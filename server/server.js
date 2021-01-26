@@ -1,13 +1,21 @@
 require("dotenv").config();
 const express = require("express");
 
+const db = require('./db');
 const app = express();
 
 //get all restaurants
-app.get("/restaurants",(req,res) =>{
-   res.status(200).json({
-
-   });
+app.get("/restaurants", async (req, res) => {
+    try{
+       const {rows} = await db.query('SELECT * FROM restaurants');
+       res.status(200).json({
+            data: {
+               restaurants: rows
+            }
+       });
+    }catch (e) {
+       console.log(e);
+    }
 });
 //get one restaurant
 app.get("/restaurant/:restaurantid",(req,res) =>{
